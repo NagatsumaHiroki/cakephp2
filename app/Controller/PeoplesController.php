@@ -36,10 +36,23 @@ class PeoplesController extends Controller {
     //Top画面表示
  	public function index()
     {
-      
-      $datas = $this->People->find('all');
+      if($this->request->is('post')){
+		$name = $this->request->data['People']['name'];
+		$mail = $this->request->data['People']['mail'];
+		$condition = ['conditions'=>[
+			'and' =>[
+				'name like'=>'%'.$name.'%',
+				'mail like'=>'%'.$mail.'%',
+				]
+		]];
+		//$datas = $this->People->find()->where(['name'=>$name]);
+
+		$datas = $this->People->find('all',$condition);
+
+	  }else{
+	  	$datas = $this->People->find('all',['oeder' =>'People.age']);
+	  }
 	  $this->set('datas',$datas);
-      
     }
     //登録画面表示
     public function add(){
