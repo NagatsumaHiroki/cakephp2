@@ -4,10 +4,9 @@
     ['type'=>'post',
     	'url'=>['controller'=>'Peoples',
     	'action' => 'index']])?>
-    <div>name</div>
-    <div><?=$this->Form->text('People.name') ?></div>
-    <div>mail</div>
-    <div><?=$this->Form->text('People.mail') ?></div>
+    <div>name:<?=$this->Form->text('People.name',array('style' => 'width:180px')) ?>
+    mail:<?=$this->Form->text('People.mail',array('style' => 'width:180px')) ?>
+    </div>
     <div><?=$this->Form->submit('検索') ?></div>
     <?=$this->Form->end() ?>
     <table>
