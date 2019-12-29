@@ -7,7 +7,8 @@ class People extends Entity{
 	protected $_accessible =[
 	'name'=> true,
 	'mail'=> true,
-	'age' => true
+	'age' => true,
+	'delete_flg' => true,
 	
 	]
 }

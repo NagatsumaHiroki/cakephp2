@@ -31,26 +31,30 @@ App::uses('Controller', 'Controller');
  * @link		https://book.cakephp.org/2.0/en/controllers.html#the-app-controller
  */
 class PeoplesController extends Controller {
-    
-     
+
     //Top画面表示
  	public function index()
     {
+	  $delete_flg = 0;
+
       if($this->request->is('post')){
 		$name = $this->request->data['People']['name'];
 		$mail = $this->request->data['People']['mail'];
 		$condition = ['conditions'=>[
+			'delete_flg ' => $delete_flg,
 			'and' =>[
 				'name like'=>'%'.$name.'%',
 				'mail like'=>'%'.$mail.'%',
-				]
+			]
 		]];
-		//$datas = $this->People->find()->where(['name'=>$name]);
-
+		
 		$datas = $this->People->find('all',$condition);
 
 	  }else{
-	  	$datas = $this->People->find('all',['oeder' =>'People.age']);
+		$condition = ['conditions'=>[
+			'delete_flg ' => $delete_flg,
+		]];
+	  	$datas = $this->People->find('all',$condition);
 	  }
 	  $this->set('datas',$datas);
     }
@@ -61,44 +65,55 @@ class PeoplesController extends Controller {
     //登録処理
     public function create(){
     	if($this->request->is('post')){
-    		$data = $this->request->data['People'];
-    		// モデルをロード
-        	$this->loadModel('People');
-        	
-        	// scoresテーブルに保存
-        	$this->People->save($data);
-        	
+			$data = $this->request->data;
+			
+			$check = $this->People->save($data);
+
+			if($check === false) {
+				return $this->render('add');
+			}
         	return $this->redirect(['action' => 'index']);
     	
     	}
     }
     //編集画面表示
-    public function edit($id=null){
+    public function edit(){
     	//Get確認
     	if($this->request->is('get')){
-    		$id = $this->request->query('id');
-    		//指定プライマリーキーのデータをセット
- 			$datas = $this->People->findById($id);
+			$id = $this->request->query('id');
+			$datas = $this->People->findById($id);
+
  			$this->set('datas',$datas);
- 		}
+		 }
+		 
     }
     //更新処理
     public function update(){
     
     	if($this->request->is('post')){
-    		$data = $this->request->data['People'];
-    		$this->People->save($data);
-    	
-    		return $this->redirect(['action' => 'index']);
+			
+			$id = $this->request->data['People']['id'];
+			//$id = $this->request->query('id');
+			$update_datas = $this->request->data['People'];
+			$check = $this->People->save($update_datas);
+			if($check === false) {
+				$datas = $this->People->findById($id);
+				$this->set(compact('id','datas'));
+				//$this->set('datas',$datas);
+				return $this->render('edit');
+			}
+			return $this->redirect(['action' => 'index']);
     	}
     }
     //削除処理
-    //TODO:POSTリンクを使用した削除処理
-    //TODO：DB上論理削除？
-    public function delete($id = null){
+    public function delete(){
     	if($this->request->is('get')){
-    		$id = $this->request->query('id');
-    		$this->People->delete($id);
+			$id = $this->request->query('id');
+			$datas = array('People' => array('id' => $id, 'delete_flg' => 1));
+			// 更新する項目（フィールド指定）
+			$fields = array('delete_flg');
+			// deleteフラグ更新 0:未削除　1:削除
+			$this->People->save($datas, false, $fields);
     		return $this->redirect(['action' => 'index']);
     	}
     }

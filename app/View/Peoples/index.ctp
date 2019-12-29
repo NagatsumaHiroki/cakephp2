@@ -4,8 +4,8 @@
     ['type'=>'post',
     	'url'=>['controller'=>'Peoples',
     	'action' => 'index']])?>
-    <div>name:<?=$this->Form->text('People.name',array('style' => 'width:180px')) ?>
-    mail:<?=$this->Form->text('People.mail',array('style' => 'width:180px')) ?>
+    <div>name:<?=$this->Form->text('People.name',array('style' => 'width:180px','required' => false)) ?>
+    mail:<?=$this->Form->text('People.mail',array('style' => 'width:180px','required' => false)) ?>
     </div>
     <div><?=$this->Form->submit('検索') ?></div>
     <?=$this->Form->end() ?>
@@ -23,11 +23,13 @@
             <?php foreach ($datas as $key=>$val): ?>
                 <tr>
                     <td><?php echo $datas[$key]['People']['id']?></td>
+                    <!-- POSTリンクに修正-->
                     <td><a href="<?php echo($this->Html->url(array('controller' => 'Peoples','action' => 'edit')));?>?id=<?php echo $datas[$key]['People']['id']?>">
                     <?php echo $datas[$key]['People']['name'] ?></a>
 					</td>
                     <td><?php echo $datas[$key]['People']['age']?></td>
                     <td><?php echo $datas[$key]['People']['mail']?></td>
+                    <!-- POSTリンクに修正-->
                     <td><a href="<?php echo($this->Html->url(array('controller' => 'Peoples','action' => 'delete')));?>?id=<?php echo $datas[$key]['People']['id']?>">
                     delete
                     </a></td>

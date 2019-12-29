@@ -1,15 +1,14 @@
 <div>
     <h3>List Persons</h3>
-   <?=$this->Form->create(null,
-    ['type'=>'post',
-    	'url'=>['controller'=>'Peoples',
-    	'action' => 'create']])?>
+   <form action="<?php echo $this->Html->url('/Peoples/create'); ?>" method="POST">
     <div>name</div>
-    <div><?=$this->Form->text('People.name') ?></div>
+    <div><?=$this->Form->text('People.name',array('required' => false)) ?></div>
+    <?php echo $this->Form->error('People.name') ?>
     <div>mail</div>
-    <div><?=$this->Form->text('People.mail') ?></div>
+    <div><?=$this->Form->text('People.mail',array('required' => false)) ?></div>
+    <?php echo $this->Form->error('People.mail') ?>
     <div>age</div>
     <div><?=$this->Form->text('People.age') ?></div>
-    <div><?=$this->Form->submit('‘—M') ?></div>
-   <?=$this->Form->end() ?>
+    <div><?=$this->Form->submit('ç™»éŒ²') ?></div>
+   </form>
 </div>

@@ -31,5 +31,29 @@ App::uses('AppModel', 'Model');
  */
 class People extends AppModel {
 	/** 使用テーブル名 */
-    public $useTable = 'people'
+    public $name = 'people';
+
+    public $validate = array(
+        'name' => array(
+            'rule1' => array(
+                'rule' => 'notBlank',
+                'message' => '名前を入力してください'
+            ),
+            'rule2' =>array(
+                'rule' => array('between',0,50),
+                'message' => '名前は50文字以内で入力してください'
+            )
+        ),
+        'mail' => array(
+            'rule1' => array(
+                'rule' => 'notBlank',
+                'message' => 'メールアドレスを入力してください'
+            ),
+            'rule2' =>array(
+                'rule' => array('between',0,30),
+                'message' => 'メールアドレスは50文字以内で入力してください'
+            )
+        )
+
+    );
 }
